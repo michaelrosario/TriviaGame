@@ -1,4 +1,263 @@
+html, body {
+    padding: 0; 
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+    width: 100%;
+    overflow: hidden;
+}
+* { box-sizing: border-box; }
+.clearfix { float: left; width: 100%; clear: both; display: block; }
+
+#question { 
+    font-size: 24px; 
+    font-weight: bold; 
+    margin: 0 0 20px 0; 
+    color: green;
+    line-height: 1.25em;
+}
+
+#counter {
+    color: #999; 
+    font-size: 12px;
+    padding: 0px 0 10px; 
+    margin-bottom: 10px;
+    border-bottom: 1px solid #CCC;
+}
+
 #timer { 
+    text-shadow: 0 0 3px #CCC, 0 0 5px #999;
     font-family: "Digital-7", sans-serif; 
-    font-size: 40px;
+    font-size: 90px;
+    position: absolute; 
+    top: 70px;
+    right: 100px;
+    z-index: 999;
+    color: white;
+}
+
+.status-bar { 
+    height: 100%; 
+    width: 100%; 
+    position: fixed; 
+    bottom: 0px; 
+    float: left; 
+    background: green url(../images/bg-animals.png) 0px repeat;
+    background-size: 500px;
+    transition: all 1.6s linear;
+}
+
+.status-bar .bar {
+    opacity: 0.9;
+    transition: all 1s linear;
+    float: left; 
+    width: 100%; 
+    height: 100%;
+    background: #000;
+}
+
+.status-bar .bar.green {
+    background: #66FF00;
+}
+
+.status-bar .bar.red {
+    background: #ff1919;
+}
+
+.status-bar .bar.orange {
+    background: #FF8C00;
+}
+
+.wrapper {
+    position: absolute;
+    top: 80px;
+    left: 100px;
+    width: 90%;
+}
+
+.wrapper.ready h1 {
+    text-shadow: 0 0 3px #CCC, 0 0 5px #999;
+}
+
+h1,
+.instructions { 
+    color: #FFF;
+    font-weight: 700;
+    font-size: 70px;
+    float: left; 
+}
+
+.start { 
+    float: left;
+    display: none; 
+    padding: 15px 20px;
+    border: 3px solid #FFF;
+    color: #FFF;
+    font-size: 30px;
+    text-decoration: none;  
+}
+.start:hover {
+    transition: all 0.02s linear;
+    color: #66FF00;
+    border-color: #66FF00;
+}
+
+.instructions {
+    padding: 40px 0 60px;
+    font-size: 50px;
+    width: 86%;
+    font-weight: 300;
+    line-height: 1.25em;
+}
+
+.container { 
+    transition: all 0.8s ease-in-out;
+    display: block;
+    box-shadow: 0 0 3px #CCC, 0 0 5px #999;
+    width: 600px;
+    position: absolute;
+    z-index: 1000; 
+    top: 200px;
+    margin-left: 120%;
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 40px;
+}
+.container.ready {
+    margin-left: 100px;
+}
+.container.startOver {
+    margin-left: -200%;
+}
+.container.startOver.reset,
+.container.reset {
+  transition: all 0s linear;
+   opacity: 0;
+   margin-left: 200%;
+}
+
+#options {
+    list-style: none;
+    display: block; 
+}
+
+#options li {
+    width: 100%;
+    display: inline-block;
+}
+#options a { 
+    margin: 0 0 8px 0; 
+    padding: 10px 20px;
+    border: 2px solid green;
+    border-radius: 100px;
+    display: inline-block;
+    width: 100%;
+    color: green;
+    text-decoration: none;
+    max-width: 400px;
+    transition: all 0.02s linear;
+}
+
+#options a:hover {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+}
+
+#options a:active {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+    margin: 1px 0 7px 0;
+}
+
+
+@media only screen and (max-width: 870px) {
+    
+    .wrapper { left: 70px; }
+
+    #options li {
+        width: 100%;
+        display: block;
+        clear: both;
+        text-align: center;
+    }
+
+    .container { 
+        top: 150px;  
+    }
+
+    .container.ready {
+        margin-left: 70px;
+        width: 75%;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+    .instructions {
+        font-size: 40px;
+    }
+    #timer { 
+        font-size: 60px;
+        top: 75px; 
+    }
+}
+
+
+@media only screen and (max-width: 720px){
+    
+    .container {
+        top: 160px;
+        position: absolute;
+    }
+    .container.ready {
+        
+        left: 50%;
+        margin-left: 0;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
+
+    .wrapper {
+        position: absolute;
+        top: 60px;
+        left: 0px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    h1 { 
+        float: none;
+        left: 0px;
+        position: relative;
+        width: 90%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 0;
+        font-size: 40px;
+    }
+
+    .instructions {
+        float: none;
+        position: relative;
+        margin: 0 auto;
+        font-size: 35px;
+        text-align: center;
+        width: 90%;
+        left: 0px;
+    }
+
+    .start {
+        margin: 0 auto;
+        float: none;
+    }
+
+    #timer { 
+        right: auto;
+        font-size: 40px; 
+        position: absolute;
+        top: 110px; 
+        width: 100%; 
+        text-align: center; }
+
 }

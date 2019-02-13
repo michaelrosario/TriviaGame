@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=744">
 
     <!-- jQuery Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <!-- MEYERWEB RESET CSS 
-    <link rel="stylesheet" href="./assets/css/reset.css">
-    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 
     <style>
         @font-face {
@@ -22,21 +18,39 @@
         }
     </style>
 
+    <!-- MEYERWEB RESET CSS -->
+    <link rel="stylesheet" href="./assets/css/reset.css">
+
      <!-- Custom CSS -->
      <link rel="stylesheet" href="./assets/css/style.css">
 
 </head>
 <body>
 
-    <h1>Animal Trivia</h1>
+    <div class="status-bar">
+        <div class="bar"></div>
+    </div>
 
     <div id="timer"></div>
+    
+    <div class="wrapper">
 
-    <div id="question">
+        <h1>Animal Trivia</h1>
 
+        <div class="instructions" data-content="Welcome to Animal Trivia.  You have 25 seconds to answer each question. Good luck!">
+        </div>
+
+        <div class="clearfix"></div>
+
+        <a href="#" class="start">Click here to Start!</a>
+    
     </div>
-    <ul id="options">
-    </ul>
+    <div class="container">
+        <div id="counter"></div> 
+        <div id="question"></div>    
+        <ul id="options"></ul>
+         <div class="clearfix"></div>
+    </div>
 
     <script src="./assets/javascript/app.js"></script>
 
