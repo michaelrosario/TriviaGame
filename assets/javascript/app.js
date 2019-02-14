@@ -73,29 +73,52 @@ var questions = [
 	            }
 	        ]
 	    },
+	    {
+	        question : "A tarantula spider can survive without food for how long?",
+	        choices : [
+	            {
+	                choice: "2 years",
+	                picture: "https://media.giphy.com/media/ilYH0gWXsP4nm/giphy.gif",
+	                hint: "Scientists have tested for how long a tarantula can live without eating. The longest period was 2 years and 9 months and 19 days.",
+	                answer: true,
+	            },
+	            {
+	                choice: "1 year",
+	                answer: false,
+	            },
+	            {
+	                choice: "6 months",
+	                answer: false,
+	            },
+	            {
+	                choice: "3 weeks",
+	                answer: false,
+	            }
+	        ]
+	    },
 		{
-		        question : "Where is the heart of a shrimp located?",
-		        choices : [
-		            {
-		                choice: "Tail",
-		                answer: false,
-		            },
-		            {
-		                choice: "Belly",
-		                answer: false,
-		            },
-		            {
-		                choice: "Abdomen",
-		                answer: false,
-		            },
-		            {
-		                choice: "Head",
-		                picture: "https://media.giphy.com/media/dUbpfXvWFDBW8/giphy.gif",
-		                hint: "What'd you know? The shrimp both have it's brain and heart in it's head.",
-		                answer: true,
-		            }
-		        ]
-		    },
+			question : "Where is the heart of a shrimp located?",
+		  	choices : [
+		        {
+		            choice: "Tail",
+		            answer: false,
+		        },
+		        {
+		            choice: "Belly",
+		            answer: false,
+		        },
+		        {
+		            choice: "Antennae",
+		            answer: false,
+		        },
+		        {
+		            choice: "Head",
+		            picture: "https://media.giphy.com/media/dUbpfXvWFDBW8/giphy.gif",
+		           	hint: "The shrimp's heart is located in the thorax, which is part of their head, along with the brain and the other good parts.",
+		            answer: true,
+		        }
+		    ]
+		},
 	    {
 	        question : "What is the only mammal that can truly fly?",
 	        choices : [
@@ -267,6 +290,8 @@ var questions = [
 	function showAnswer(message){
 
 		clearTimeout(currentTimer); // kill the current timer
+		
+		$(".container").addClass("answer"); // add class for timer
 
 		// hide and clear previous optoins and questions
 		$("#options,#question").hide().empty(); 
@@ -283,6 +308,7 @@ var questions = [
 		// Show answer for 5 seconds
 		setTimeout(function(){
 			
+			$(".container").removeClass("answer"); // add class for timer
 			$(".container").removeClass("ready"); 	// CSS animation styles
 			$(".container").addClass("startOver"); 	// CSS animation styles
 			$("#picture,#hint").fadeOut(); 			// hide picture and hint
@@ -305,7 +331,7 @@ var questions = [
 		// Show the results
 		$(".instructions").html(`
 			You got <strong>${currentScore} of ${countQuestions}</strong> correct!
-			<br><br>
+			<br>
 			<span>Incorrect answers: <strong>${currentIncorrects}</strong></span>
 			<span>Timeouts: <strong>${currentTimeouts}</strong></span>
 		`);
