@@ -35,7 +35,7 @@ var questions = [
 	            {
 	                choice: "Ostrich",
 	                picture: "https://media.giphy.com/media/qghdusmfvfjri/giphy.gif",
-					hint: "Ostrich has the biggest eyes in the whole animal kingdom. Its eye is bigger than its brain.",
+					hint: "The ostrich's eyes are about the size of billiard balls and its brain is actually smaller than either one of its eyeballs.",
 	                answer: true,
 	            },
 	            {
@@ -307,13 +307,17 @@ var questions = [
 		var bar = $(".status-bar .bar");
 		if( percentage <= 100 && percentage >= 70 ){
 			bar.removeClass("red");
+			bar.removeClass("blink");
 			bar.addClass("green");
-		} else if( percentage < 70 && percentage >= 40 ){
+		} else if( percentage < 70 && percentage >= 30 ){
 			bar.addClass("orange");
 			bar.addClass("green");
-		} else if( percentage < 40 ) {
+		} else if( percentage < 30 && percentage >= 10) {
 			bar.removeClass("orange");
 			bar.addClass("red");
+		} else if( percentage < 10) {
+			bar.removeClass("red");
+			bar.addClass("blink");
 		} else {
 			bar.removeClass("red");
 		}
