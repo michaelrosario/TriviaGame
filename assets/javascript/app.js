@@ -215,11 +215,9 @@ var questions = [
 	}
 	
 	function starTimer() {
-
-		var timerSet = timer+1;
+		var timerSet = timer;
 		// show the question
 	    currentTimer = setInterval(function(){ 
-	        timerSet--;
 			handleBarStatus(timerSet,timer);
 			if(timerSet < 10){
 	        	$("#timer").html("00:0"+timerSet);
@@ -227,13 +225,14 @@ var questions = [
 				$("#timer").html("00:"+timerSet);
 			}
 			$("#timer:hidden").fadeIn();
-	        if(timerSet === 0){
-	            currentTimeouts++;
-				$("#timer").html("TIMES UP");
+	        if(timerSet < 0){
 	            clearTimeout(currentTimer);
 				showAnswer(`Times up! The correct answer is <strong>${currentAnswer}.</strong>`);
-
-	        }
+				currentTimeouts++;
+				$("#timer").html("TIMES UP");
+	        } else {
+				timerSet--;
+			}
 	    },1000);
 	}
 
@@ -306,7 +305,6 @@ var questions = [
 	function handleBarStatus(current,total){
 		var percentage = 100-(100-(current/total)*100);
 		var bar = $(".status-bar .bar");
-		$(".status-bar").css("background-position",100-percentage);
 		if( percentage <= 100 && percentage >= 70 ){
 			bar.removeClass("red");
 			bar.addClass("green");
@@ -319,5 +317,7 @@ var questions = [
 		} else {
 			bar.removeClass("red");
 		}
+		$(".status-bar").css("background-position",100-percentage);
 		bar.css("width",percentage+"%");
+		console.log(percentage+"%");
 	}
