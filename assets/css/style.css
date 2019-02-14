@@ -10,7 +10,7 @@ html, body {
 strong { font-weight: 700; }
 
 #question { 
-    font-size: 24px; 
+    font-size: 25px; 
     font-weight: bold; 
     margin: 0 0 20px 0; 
     color: green;
@@ -110,9 +110,16 @@ h1,
     font-weight: 300;
     line-height: 1.25em;
 }
+.instructions span {
+    clear: both; 
+    display: block;
+    width: 100%;
+    font-size: 40px;
+    margin: 5px 0 10px;
+}
 
 .container { 
-    transition: all 0.8s ease-in-out;
+    transition: all 0.8s ease;
     display: block;
     box-shadow: 0 0 3px #CCC, 0 0 5px #999;
     width: 600px;
@@ -135,6 +142,13 @@ h1,
   transition: all 0s linear;
    opacity: 0;
    margin-left: 200%;
+}
+
+.container.startOver.reset #options,
+.container.reset #options,
+.container.startOver.reset #question,
+.container.reset #question {
+    display: none !important;
 }
 
 #options {
@@ -172,22 +186,24 @@ h1,
     margin: 1px 0 7px 0;
 }
 
-#picture img { 
+#picture div { 
     border: 2px solid green;
+    width: 25%;
+    padding-bottom: 25%;
+    border-radius: 1000px;
     float: left;
-    width: 100%; 
-    height: auto;
-    margin: 0 auto 15px 0;
-    border-radius: 4px;
+    margin: 10px 20px 20px 0;
 }
 
 #hint h5 { 
-    font-size: 26px;
+    font-size: 27px;
     margin: 10px 0;
     line-height: 1.25em;
 }
 
 #hint {
+    width: 70%;
+    display: inline-block;
     line-height: 1.25em;
 }
 
@@ -218,6 +234,9 @@ h1,
     }
     .instructions {
         font-size: 40px;
+    }
+    .instructions span {
+        font-size: 30px;
     }
     #timer { 
         font-size: 60px;
@@ -280,6 +299,19 @@ h1,
         position: absolute;
         top: 110px; 
         width: 100%; 
-        text-align: center; }
+        text-align: center; 
+    }
+    
+    #picture, #hint { width: 100%; text-align: center; }
+    #picture div { 
+        border: 2px solid green;
+        height: 130px;
+        width: 130px; 
+        border-radius: 1000px;
+        float: none;
+        display: inline-block;
+        margin: 0 auto 0px auto;
+    }
+    
 
 }

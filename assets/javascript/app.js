@@ -15,8 +15,10 @@ var instructionGenerator = setInterval(function(){
 
 // Variables
 var current = 0;	// global count of the current question
-var timer = 25;	// variable to set seconds per answer
+var timer = 10;		// variable to set seconds per answer
 var currentScore = 0;
+var currentTimeouts = 0;
+var currentIncorrects = 0;
 var currentTimer; 	// used for set interval
 var currentPicture; // get the current picture
 var currentAnswer; // get the current answer
@@ -59,7 +61,7 @@ var questions = [
 	            },
 	            {
 	                choice: "King Cobra",
-	                picture: "https://media.giphy.com/media/AT2W5RsfjaIjS/giphy.gif",
+	                picture: "https://media.giphy.com/media/lItmREiQTcgE/giphy.gif",
 	                hint: "The king cobra is the only type of snake on the planet to build a nest for her eggs primarily to keep the eggs safe.",
 	                answer: true,
 	            },
@@ -69,12 +71,35 @@ var questions = [
 	            }
 	        ]
 	    },
+		{
+		        question : "Where is the heart of a shrimp located?",
+		        choices : [
+		            {
+		                choice: "Tail",
+		                answer: false,
+		            },
+		            {
+		                choice: "Belly",
+		                answer: false,
+		            },
+		            {
+		                choice: "Abdomen",
+		                answer: false,
+		            },
+		            {
+		                choice: "Head",
+		                picture: "https://media.giphy.com/media/dUbpfXvWFDBW8/giphy.gif",
+		                hint: "What'd you know? The shrimp both have it's brain and heart in it's head.",
+		                answer: true,
+		            }
+		        ]
+		    },
 	    {
 	        question : "What is the only mammal that can truly fly?",
 	        choices : [
 	            {
 	                choice: "The Bat",
-	                picture: "https://media.giphy.com/media/HNdRJNO0whxkI/giphy.gif",
+	                picture: "https://media.giphy.com/media/qH1PNSJcvinDi/source.gif",
 					hint: "Bats are mammals of the order Chiroptera; with their forelimbs adapted as wings, they are the only mammals naturally capable of true and sustained flight.",
 	                answer: true,
 	            },
@@ -93,7 +118,7 @@ var questions = [
 	        ]
 	    },
 	    {
-	        question : "A snail can sleep for how many years?",
+	        question : "A snail can sleep for how long?",
 	        choices : [
 	            {
 	                choice: "6 months",
@@ -101,8 +126,8 @@ var questions = [
 	            },
 	            {
 	                choice: "3 years",
-	                picture: "https://media.giphy.com/media/yWB3Q8N9DZmRG/giphy.gif",
-					hint: "It may sound impossible, but a snail can sleep for three years.",
+	                picture: "https://media.giphy.com/media/B6cisLSD2kTmM/giphy.gif",
+					hint: "Snails can sleep for 3 years to hibernate and sleep when weather becomes excessively cold. Snails will bury themselves in the ground and close their shells off with their own slime.",
 	                answer: true,
 	            },
 	            {
@@ -121,12 +146,19 @@ var questions = [
 
 	// Start the game
 	$(".start").on("click",function(){
-		current = 0;	// global count of the current question
+		
+		// Variable resets
+		current = 0;			// global count of the current question
 		currentScore = 0;
+		currentIncorrects = 0;
+		currentTimeouts = 0;
+
 		$(".start, .instructions").fadeOut();
 		$(".wrapper").addClass("ready");
+
 		generateQuestion(); // get the questions ready
 		setTimeout(starTimer,500);
+
 	});
 	
 	// Get a random number 
@@ -145,17 +177,18 @@ var questions = [
 		setTimeout(function(){
 			$(".container").removeClass("reset");
 			$(".container").addClass("ready"); 
+			$("#question,#options").fadeIn();
 		},900);
 		
 		currentQuestion = questions[current];
 
-		$("#question").hide().html(currentQuestion.question).fadeIn();
+		$("#question").html(currentQuestion.question);
 
 		current++;
 
 		$("#counter").html("Question "+current+" of "+countQuestions);
 
-		$("#options").html("").fadeIn(); // clear options and show if hidden;
+		$("#options").html(""); // clear options and show if hidden;
 
 		$("#options a").unbind("click");
 
@@ -175,25 +208,27 @@ var questions = [
 				showAnswer("That's Correct!");
 				currentScore++;
 			} else {
+				currentIncorrects++;
 				showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
 			}
 		});
 	}
 	
 	function starTimer() {
-		$("#timer").show();
+
 		var timerSet = timer+1;
 		// show the question
 	    currentTimer = setInterval(function(){ 
 	        timerSet--;
-			handleBarStatus(timerSet,25);
+			handleBarStatus(timerSet,timer);
 			if(timerSet < 10){
 	        	$("#timer").html("00:0"+timerSet);
 			} else {
 				$("#timer").html("00:"+timerSet);
 			}
+			$("#timer:hidden").fadeIn();
 	        if(timerSet === 0){
-	            
+	            currentTimeouts++;
 				$("#timer").html("TIMES UP");
 	            clearTimeout(currentTimer);
 				showAnswer(`Times up! The correct answer is <strong>${currentAnswer}.</strong>`);
@@ -206,7 +241,10 @@ var questions = [
 		clearTimeout(currentTimer);
 		var counter = 0;
 		$("#options,#question").hide().empty();
-		$("#picture").hide().html(`<img src='${currentPicture}'>`).fadeIn();
+		$("#picture").hide().html(`
+			<div style="background: url('${currentPicture}') center center no-repeat; background-size: cover;">
+			</div>
+		`).fadeIn();
 		$("#hint").hide().html(`<h5>${message}</h5> ${currentHint}`).fadeIn();
 
 		setTimeout(function(){
@@ -220,6 +258,9 @@ var questions = [
 
 				$(".instructions").html(`
 					You got <strong>${currentScore} of ${countQuestions}</strong> correct!
+					<br><br>
+					<span>Incorrect answers: <strong>${currentIncorrects}</strong></span>
+					<span>Timeouts: <strong>${currentTimeouts}</strong></span>
 				`);
 
 				$(".start").html("Click here to Play Again!");
@@ -232,7 +273,7 @@ var questions = [
 				generateQuestion();
 				starTimer();
 			}
-		},6000);
+		},5000);
 	}
 
 	function showResults(){
