@@ -208,8 +208,6 @@ var questions = [
 		$("#options,#question").hide().empty();
 		$("#picture").hide().html(`<img src='${currentPicture}'>`).fadeIn();
 		$("#hint").hide().html(`<h5>${message}</h5> ${currentHint}`).fadeIn();
-		
-		console.log(`${current} === ${countQuestions}`)
 
 		setTimeout(function(){
 			
