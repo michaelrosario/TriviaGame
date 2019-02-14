@@ -15,8 +15,8 @@ var instructionGenerator = setInterval(function(){
 
 // Variables
 var current = 0;	// global count of the current question
-
 var timer = 25;	// variable to set seconds per answer
+var currentScore = 0;
 var currentTimer; 	// used for set interval
 var currentPicture; // get the current picture
 var currentAnswer; // get the current answer
@@ -121,6 +121,8 @@ var questions = [
 
 	// Start the game
 	$(".start").on("click",function(){
+		current = 0;	// global count of the current question
+		currentScore = 0;
 		$(".start, .instructions").fadeOut();
 		$(".wrapper").addClass("ready");
 		generateQuestion(); // get the questions ready
@@ -147,7 +149,7 @@ var questions = [
 		
 		currentQuestion = questions[current];
 
-		$("#question").html(currentQuestion.question);
+		$("#question").hide().html(currentQuestion.question).fadeIn();
 
 		current++;
 
@@ -171,6 +173,7 @@ var questions = [
 		    console.log(currentQuestion.choices[choice].answer);
 			if(currentQuestion.choices[choice].answer === true){
 				showAnswer("That's Correct!");
+				currentScore++;
 			} else {
 				showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
 			}
@@ -178,6 +181,7 @@ var questions = [
 	}
 	
 	function starTimer() {
+		$("#timer").show();
 		var timerSet = timer+1;
 		// show the question
 	    currentTimer = setInterval(function(){ 
@@ -201,18 +205,42 @@ var questions = [
 	function showAnswer(message){
 		clearTimeout(currentTimer);
 		var counter = 0;
-		$("#options").fadeOut();
+		$("#options,#question").hide().empty();
 		$("#picture").hide().html(`<img src='${currentPicture}'>`).fadeIn();
 		$("#hint").hide().html(`<h5>${message}</h5> ${currentHint}`).fadeIn();
 		
+		console.log(`${current} === ${countQuestions}`)
+
 		setTimeout(function(){
+			
 			$(".container").removeClass("ready");
 			$(".container").addClass("startOver");
 			$("#picture,#hint").fadeOut();
-			generateQuestion();
-			starTimer();
-		},10000);
+			
+			// There are no more questions
+			if(current === countQuestions){
 
+				$(".instructions").html(`
+					You got <strong>${currentScore} of ${countQuestions}</strong> correct!
+				`);
+
+				$(".start").html("Click here to Play Again!");
+
+				$(".start, .instructions").fadeIn();
+				$(".status-bar .bar").attr("class","bar");
+				showResults();
+
+			} else {
+				generateQuestion();
+				starTimer();
+			}
+		},6000);
+	}
+
+	function showResults(){
+		$("#timer").hide();
+		$(".status-bar .bar").css("width","100%");
+		$(".wrapper").removeClass("ready");
 	}
 
 	// Shuffle the questions
@@ -241,6 +269,7 @@ var questions = [
 		var bar = $(".status-bar .bar");
 		$(".status-bar").css("background-position",100-percentage);
 		if( percentage <= 100 && percentage >= 70 ){
+			bar.removeClass("red");
 			bar.addClass("green");
 		} else if( percentage < 70 && percentage >= 40 ){
 			bar.addClass("orange");

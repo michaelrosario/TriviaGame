@@ -81,6 +81,7 @@ strong { font-weight: 700; }
 
 h1,
 .instructions { 
+    clear: both;
     color: #FFF;
     font-weight: 700;
     font-size: 70px;
@@ -171,6 +172,25 @@ h1,
     margin: 1px 0 7px 0;
 }
 
+#picture img { 
+        border: 2px solid green;
+        float: left;
+        width: 100%; 
+        height: auto;
+        margin: 0 auto 15px 0;
+        border-radius: 4px;
+    }
+
+    #hint h5 { 
+        font-size: 26px;
+        margin: 10px 0;
+        line-height: 1.25em;
+    }
+    #hint {
+        line-height: 1.25em;
+    }
+
+
 
 @media only screen and (max-width: 870px) {
     
@@ -260,18 +280,5 @@ h1,
         top: 110px; 
         width: 100%; 
         text-align: center; }
-
-    #picture img { 
-        border: 2px solid green;
-        float: left;
-        width: 100%; 
-        height: auto;
-        margin: 0 auto 15px 0;
-    }
-
-    #hint h5 { 
-        font-size: 30px;
-        margin: 10px 0; 
-    }
 
 }
