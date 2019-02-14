@@ -18,6 +18,9 @@ var current = 0;	// global count of the current question
 
 var timer = 25;	// variable to set seconds per answer
 var currentTimer; 	// used for set interval
+var currentPicture; // get the current picture
+var currentAnswer; // get the current answer
+var currentHint; // get the current hint
 
 var questions = [
 	    {
@@ -129,35 +132,49 @@ var questions = [
 	var currentQuestion;
 
 	function generateQuestion(){
+		
 		// css animation - move questions to the right
 		setTimeout(function(){
 			$(".container").removeClass("startOver"); 
 			$(".container").addClass("reset");
 		},500);
+		
 		// css animation - move questions to center
 		setTimeout(function(){
 			$(".container").removeClass("reset");
 			$(".container").addClass("ready"); 
 		},900);
+		
 		currentQuestion = questions[current];
+
 		$("#question").html(currentQuestion.question);
+
 		current++;
+
 		$("#counter").html("Question "+current+" of "+countQuestions);
-		$("#options").html(""); // clear options;
+
+		$("#options").html("").fadeIn(); // clear options and show if hidden;
+
 		$("#options a").unbind("click");
+
 		for(var i = 0; i < currentQuestion.choices.length; i++) {
 		    $("#options").append(`<li><a href="#" data-choice="${i}">${currentQuestion.choices[i].choice}</a></li>`);
+			if(currentQuestion.choices[i].answer === true){
+				currentPicture 	= currentQuestion.choices[i].picture;
+				currentHint 	= currentQuestion.choices[i].hint;
+				currentAnswer	= currentQuestion.choices[i].choice;
+			}
 		}
+
 		$("#options a").bind("click",function(){
 		    var choice = $(this).attr("data-choice");
 		    console.log(currentQuestion.choices[choice].answer);
 			if(currentQuestion.choices[choice].answer === true){
-				$("#timer").html("That's Correct!");
+				showAnswer("That's Correct!");
 			} else {
-				$("#timer").html("That's Wrong!");
+				showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
 			}
 		});
-	
 	}
 	
 	function starTimer() {
@@ -172,18 +189,35 @@ var questions = [
 				$("#timer").html("00:"+timerSet);
 			}
 	        if(timerSet === 0){
-	            $("#timer").html("TIMES UP");
-				$(".container").removeClass("ready");
-				$(".container").addClass("startOver");
+	            
+				$("#timer").html("TIMES UP");
 	            clearTimeout(currentTimer);
-				generateQuestion();
-				starTimer();
+				showAnswer(`Times up! The correct answer is <strong>${currentAnswer}.</strong>`);
+
 	        }
 	    },1000);
 	}
 
+	function showAnswer(message){
+		clearTimeout(currentTimer);
+		var counter = 0;
+		$("#options").fadeOut();
+		$("#picture").hide().html(`<img src='${currentPicture}'>`).fadeIn();
+		$("#hint").hide().html(`<h5>${message}</h5> ${currentHint}`).fadeIn();
+		
+		setTimeout(function(){
+			$(".container").removeClass("ready");
+			$(".container").addClass("startOver");
+			$("#picture,#hint").fadeOut();
+			generateQuestion();
+			starTimer();
+		},10000);
+
+	}
+
 	// Shuffle the questions
 	function shuffle(array) {
+
 		var currentIndex = array.length, temporaryValue, randomIndex;
 	  
 		// While there remain elements to shuffle...
@@ -192,13 +226,12 @@ var questions = [
 		  // Pick a remaining element...
 		  randomIndex = Math.floor(Math.random() * currentIndex);
 		  currentIndex -= 1;
-	  
+
 		  // And swap it with the current element.
 		  temporaryValue = array[currentIndex];
 		  array[currentIndex] = array[randomIndex];
 		  array[randomIndex] = temporaryValue;
 		}
-	  
 		return array;
 	  }
 	
