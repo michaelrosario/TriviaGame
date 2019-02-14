@@ -10,20 +10,22 @@ var instructionGenerator = setInterval(function(){
 		clearInterval(instructionGenerator);
 		$(".start").fadeIn();
 	}
-	m++;
+	m++; // increment 
 },80);
 
 // Variables
-var current = 0;	// global count of the current question
-var timer = 10;		// variable to set seconds per answer
-var currentScore = 0;
-var currentTimeouts = 0;
-var currentIncorrects = 0;
-var currentTimer; 	// used for set interval
-var currentPicture; // get the current picture
-var currentAnswer; // get the current answer
-var currentHint; // get the current hint
+var current = 0;			// global count of the current question
+var timer = 10;				// variable to set seconds per answer
+var currentScore = 0; 		// keep track of score
+var currentTimeouts = 0;	// keep track of user timeouts	
+var currentIncorrects = 0;	// keep track of incorrect answes
+var currentTimer; 			// used for set interval
+var currentPicture; 		// get the current picture
+var currentAnswer; 			// get the current answer
+var currentHint; 			// get the current hint
+var currentQuestion;		// get the current question
 
+// Questions Data Object
 var questions = [
 	    {
 	        question : "Which bird has eyes that are larger than it's brain?",
@@ -144,128 +146,151 @@ var questions = [
 	
 	var countQuestions = questions.length; // number of questions
 
+	shuffle(questions); // Shuffle the questions every time game loads
+	
 	// Start the game
 	$(".start").on("click",function(){
-		
-		// Variable resets
-		current = 0;			// global count of the current question
+
+		// Variable resets for new game
+		current = 0;			
 		currentScore = 0;
 		currentIncorrects = 0;
 		currentTimeouts = 0;
 
+		// Hide Intro UI and set the main wrapper to ready
 		$(".start, .instructions").fadeOut();
 		$(".wrapper").addClass("ready");
 
+		// Functions to start the game
 		generateQuestion(); // get the questions ready
-		setTimeout(starTimer,500);
+		setTimeout(starTimer,500); // Delay the timer half a second for CSS animation
 
 	});
-	
-	// Get a random number 
-	shuffle(questions);
-	var currentQuestion;
 
+	// Load and show current question
 	function generateQuestion(){
 		
-		// css animation - move questions to the right
+		// delay for css animation - move questions to the right
 		setTimeout(function(){
 			$(".container").removeClass("startOver"); 
 			$(".container").addClass("reset");
 		},500);
 		
-		// css animation - move questions to center
+		//delay for css animation - move questions to center
 		setTimeout(function(){
 			$(".container").removeClass("reset");
 			$(".container").addClass("ready"); 
 			$("#question,#options").fadeIn();
 		},900);
 		
+		// store current question
 		currentQuestion = questions[current];
 
 		$("#question").html(currentQuestion.question);
 
-		current++;
+		current++; // increment for next question
 
+		// display x of length question 
 		$("#counter").html("Question "+current+" of "+countQuestions);
 
-		$("#options").html(""); // clear options and show if hidden;
+		// clear options
+		$("#options").html(""); 
 
+		// remove previos click bindings
 		$("#options a").unbind("click");
 
+		// append answer options to display
 		for(var i = 0; i < currentQuestion.choices.length; i++) {
-		    $("#options").append(`<li><a href="#" data-choice="${i}">${currentQuestion.choices[i].choice}</a></li>`);
-			if(currentQuestion.choices[i].answer === true){
-				currentPicture 	= currentQuestion.choices[i].picture;
-				currentHint 	= currentQuestion.choices[i].hint;
-				currentAnswer	= currentQuestion.choices[i].choice;
+
+			var currentObject = currentQuestion.choices[i]; // store object
+
+		    $("#options").append(`<li><a href="#" data-choice="${i}">${currentObject.choice}</a></li>`);
+			
+			// store correct answer assets to variables
+			if(currentObject.answer === true){
+				currentPicture 	= currentObject.picture;
+				currentHint 	= currentObject.hint;
+				currentAnswer	= currentObject.choice;
 			}
 		}
 
+		// bind `click` to each answer options
 		$("#options a").bind("click",function(){
-		    var choice = $(this).attr("data-choice");
-		    console.log(currentQuestion.choices[choice].answer);
+			
+			var choice = $(this).attr("data-choice"); // get the index of the option
+			
+			// Check answer against object
 			if(currentQuestion.choices[choice].answer === true){
+				currentScore++; // increment score
 				showAnswer("That's Correct!");
-				currentScore++;
 			} else {
-				currentIncorrects++;
+				currentIncorrects++; // increment incorrect score
 				showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
 			}
 		});
+
 	}
 	
+	// Function to start timer and check for timeout
 	function starTimer() {
-		var timerSet = timer;
-		// show the question
+		
+		var timerSet = timer; // save the timer
+		
+		// loop every 1 second and update timer
 	    currentTimer = setInterval(function(){ 
-			handleBarStatus(timerSet,timer);
+
+			handleBarStatus(timerSet,timer); // function for moving bar
+
+			// handle timer string, supports up to 59 sec
 			if(timerSet < 10){
 	        	$("#timer").html("00:0"+timerSet);
 			} else {
 				$("#timer").html("00:"+timerSet);
 			}
-			$("#timer:hidden").fadeIn();
+
+			$("#timer:hidden").fadeIn(); // show if hidden
+
+			// check for timeout
 	        if(timerSet < 0){
-	            clearTimeout(currentTimer);
+	            clearTimeout(currentTimer); // kill the timer
 				showAnswer(`Times up! The correct answer is <strong>${currentAnswer}.</strong>`);
-				currentTimeouts++;
+				currentTimeouts++; // increment timeout score
 				$("#timer").html("TIMES UP");
 	        } else {
-				timerSet--;
+				timerSet--; // decrementer
 			}
-	    },1000);
+
+	    },1000); // 1 second
 	}
 
+	// Function to show the answer with a message
 	function showAnswer(message){
-		clearTimeout(currentTimer);
-		var counter = 0;
-		$("#options,#question").hide().empty();
+
+		clearTimeout(currentTimer); // kill the current timer
+
+		// hide and clear previous optoins and questions
+		$("#options,#question").hide().empty(); 
+		
+		// Add the answer assets image
 		$("#picture").hide().html(`
 			<div style="background: url('${currentPicture}') center center no-repeat; background-size: cover;">
 			</div>
 		`).fadeIn();
+
+		// Add the answer assets hint
 		$("#hint").hide().html(`<h5>${message}</h5> ${currentHint}`).fadeIn();
 
+		// Show answer for 5 seconds
 		setTimeout(function(){
 			
-			$(".container").removeClass("ready");
-			$(".container").addClass("startOver");
-			$("#picture,#hint").fadeOut();
+			$(".container").removeClass("ready"); 	// CSS animation styles
+			$(".container").addClass("startOver"); 	// CSS animation styles
+			$("#picture,#hint").fadeOut(); 			// hide picture and hint
 			
 			// There are no more questions
 			if(current === countQuestions){
 
-				$(".instructions").html(`
-					You got <strong>${currentScore} of ${countQuestions}</strong> correct!
-					<br><br>
-					<span>Incorrect answers: <strong>${currentIncorrects}</strong></span>
-					<span>Timeouts: <strong>${currentTimeouts}</strong></span>
-				`);
-
-				$(".start").html("Click here to Play Again!");
-
-				$(".start, .instructions").fadeIn();
-				$(".status-bar .bar").attr("class","bar");
+				// Show the results 
 				showResults();
 
 			} else {
@@ -276,14 +301,36 @@ var questions = [
 	}
 
 	function showResults(){
-		$("#timer").hide();
+
+		// Show the results
+		$(".instructions").html(`
+			You got <strong>${currentScore} of ${countQuestions}</strong> correct!
+			<br><br>
+			<span>Incorrect answers: <strong>${currentIncorrects}</strong></span>
+			<span>Timeouts: <strong>${currentTimeouts}</strong></span>
+		`);
+
+		// Update button text
+		$(".start").html("Click here to Play Again!");
+
+		// Show start button and results
+		$(".start, .instructions").fadeIn();
+
+		// Update bar
+		$(".status-bar .bar").attr("class","bar");
 		$(".status-bar .bar").css("width","100%");
+		
+		// Hide the timer
+		$("#timer").hide();
+
+		// CSS specific style
 		$(".wrapper").removeClass("ready");
 	}
 
 	// Shuffle the questions
 	function shuffle(array) {
 
+		// set up variables
 		var currentIndex = array.length, temporaryValue, randomIndex;
 	  
 		// While there remain elements to shuffle...
@@ -303,8 +350,13 @@ var questions = [
 	
 	// Added function to manage bar status
 	function handleBarStatus(current,total){
+		
+		// Calculation to get a countdown of percentage
 		var percentage = 100-(100-(current/total)*100);
+		
 		var bar = $(".status-bar .bar");
+		
+		// Add/Remove CSS classes
 		if( percentage <= 100 && percentage >= 70 ){
 			bar.removeClass("red");
 			bar.removeClass("blink");
@@ -321,7 +373,11 @@ var questions = [
 		} else {
 			bar.removeClass("red");
 		}
+
+		// Make the background of animals move
 		$(".status-bar").css("background-position",100-percentage);
+		
+		// Update bar width
 		bar.css("width",percentage+"%");
-		console.log(percentage+"%");
+		
 	}
