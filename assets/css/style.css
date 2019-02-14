@@ -3,7 +3,7 @@ html, body {
     margin: 0;
     font-family: Helvetica, sans-serif;
     width: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 * { box-sizing: border-box; }
 .clearfix { float: left; width: 100%; clear: both; display: block; }
@@ -86,6 +86,7 @@ strong { font-weight: 700; }
     top: 80px;
     left: 100px;
     width: 90%;
+    padding-bottom: 30px;
 }
 
 .wrapper.ready h1 {
@@ -140,6 +141,7 @@ h1,
     z-index: 1000; 
     top: 200px;
     margin-left: 120%;
+    margin-bottom: 40px;
     background: rgba(255,255,255,0.9);
     border-radius: 10px;
     padding: 40px;
