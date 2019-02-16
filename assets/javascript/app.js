@@ -242,9 +242,6 @@ var questions = [
 		// clear options
 		$("#options").html(""); 
 
-		// remove previos click bindings
-		$("#options a").unbind("click");
-
 		// append answer options to display
 		for(var i = 0; i < currentQuestion.choices.length; i++) {
 
@@ -260,22 +257,22 @@ var questions = [
 			}
 		}
 
-		// bind `click` to each answer options
-		$("#options a").bind("click",function(){
-			
-			var choice = $(this).attr("data-choice"); // get the index of the option
-			
-			// Check answer against object
-			if(currentQuestion.choices[choice].answer === true){
-				currentScore++; // increment score
-				showAnswer("That's Correct!");
-			} else {
-				currentIncorrects++; // increment incorrect score
-				showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
-			}
-		});
-
 	}
+
+	// assign document click for dynamically created buttons
+	$(document).on("click","#options a",function(){
+			
+		var choice = $(this).attr("data-choice"); // get the index of the option
+		
+		// Check answer against object
+		if(currentQuestion.choices[choice].answer === true){
+			currentScore++; // increment score
+			showAnswer("That's Correct!");
+		} else {
+			currentIncorrects++; // increment incorrect score
+			showAnswer(`Sorry, the correct answer is <strong>${currentAnswer}.</strong>`);
+		}
+	});
 	
 	// Function to start timer and check for timeout
 	function starTimer() {
