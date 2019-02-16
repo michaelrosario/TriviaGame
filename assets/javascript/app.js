@@ -28,6 +28,29 @@ var currentQuestion;		// get the current question
 // Questions Data Object
 var questions = [
 	    {
+		        question : "The slug has how many noses?",
+		        choices : [
+		            {
+		                choice: "One",
+		                answer: false,
+		            },
+		            {
+		                choice: "Two",
+		                answer: false,
+		            },
+		            {
+		                choice: "Three",
+		                answer: false,
+		            },
+		            {
+		                choice: "Four",
+		                picture: "https://media.giphy.com/media/lma5aujULEkKs/giphy.gif",
+						hint: "A slug has 4 noses. A slug does not have a traditional nose, but rather a pair of tentacles that it uses to smell.",
+		                answer: true,
+		            }
+		        ]
+		},
+		{
 	        question : "Which bird has eyes that are larger than it's brain?",
 	        choices : [
 	            {
