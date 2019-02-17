@@ -216,16 +216,18 @@ var questions = [
 	// Load and show current question
 	function generateQuestion(){
 		
+		var container = $(".container");
+
 		// delay for css animation - move questions to the right
 		setTimeout(function(){
-			$(".container").removeClass("startOver"); 
-			$(".container").addClass("reset");
+			container.removeClass("startOver") 
+				.addClass("reset");
 		},500);
 		
 		//delay for css animation - move questions to center
 		setTimeout(function(){
-			$(".container").removeClass("reset");
-			$(".container").addClass("ready"); 
+			container.removeClass("reset")
+				.addClass("ready"); 
 			$("#question,#options").fadeIn();
 		},900);
 		
@@ -278,6 +280,7 @@ var questions = [
 	function starTimer() {
 		
 		var timerSet = timer; // save the timer
+		var timerDiv = $("#timer");
 		
 		// loop every 1 second and update timer
 	    currentTimer = setInterval(function(){ 
@@ -286,9 +289,9 @@ var questions = [
 
 			// handle timer string, supports up to 59 sec
 			if(timerSet < 10){
-	        	$("#timer").html("00:0"+timerSet);
+				timerDiv.html("00:0"+timerSet);
 			} else {
-				$("#timer").html("00:"+timerSet);
+				timerDiv.html("00:"+timerSet);
 			}
 
 			$("#timer:hidden").fadeIn(); // show if hidden
@@ -298,7 +301,7 @@ var questions = [
 	            clearTimeout(currentTimer); // kill the timer
 				showAnswer(`Times up! The correct answer is <strong>${currentAnswer}.</strong>`);
 				currentTimeouts++; // increment timeout score
-				$("#timer").html("TIMES UP");
+				timerDiv.html("TIMES UP");
 	        } else {
 				timerSet--; // decrementer
 			}
@@ -309,9 +312,10 @@ var questions = [
 	// Function to show the answer with a message
 	function showAnswer(message){
 
+		var container = $(".container");
 		clearTimeout(currentTimer); // kill the current timer
 		
-		$(".container").addClass("answer"); // add class for timer
+		container.addClass("answer"); // add class for timer
 
 		// hide and clear previous optoins and questions
 		$("#options,#question").hide().empty(); 
@@ -328,9 +332,10 @@ var questions = [
 		// Show answer for 5 seconds
 		setTimeout(function(){
 			
-			$(".container").removeClass("answer"); // add class for timer
-			$(".container").removeClass("ready"); 	// CSS animation styles
-			$(".container").addClass("startOver"); 	// CSS animation styles
+			container.removeClass("answer")	 		// add class for timer
+				.removeClass("ready") 				// CSS animation styles
+				.addClass("startOver"); 			// CSS animation styles
+			
 			$("#picture,#hint").fadeOut(); 			// hide picture and hint
 			
 			// There are no more questions
@@ -363,8 +368,9 @@ var questions = [
 		$(".start, .instructions").fadeIn();
 
 		// Update bar
-		$(".status-bar .bar").attr("class","bar");
-		$(".status-bar .bar").css("width","100%");
+		$(".status-bar .bar")
+			.attr("class","bar")
+			.css("width","100%");
 		
 		// Hide the timer
 		$("#timer").hide();
@@ -404,18 +410,18 @@ var questions = [
 		
 		// Add/Remove CSS classes
 		if( percentage <= 100 && percentage >= 70 ){
-			bar.removeClass("red");
-			bar.removeClass("blink");
-			bar.addClass("green");
+			bar.removeClass("red")
+				.removeClass("blink")
+				.addClass("green");
 		} else if( percentage < 70 && percentage >= 30 ){
-			bar.addClass("orange");
-			bar.addClass("green");
+			bar.addClass("orange")
+				.addClass("green");
 		} else if( percentage < 30 && percentage >= 10) {
-			bar.removeClass("orange");
-			bar.addClass("red");
+			bar.removeClass("orange")
+				.addClass("red");
 		} else if( percentage < 10) {
-			bar.removeClass("red");
-			bar.addClass("blink");
+			bar.removeClass("red")
+				.addClass("blink");
 		} else {
 			bar.removeClass("red");
 		}
