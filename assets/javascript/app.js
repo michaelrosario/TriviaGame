@@ -195,21 +195,25 @@ var questions = [
 	shuffle(questions); // Shuffle the questions every time game loads
 	
 	// Start the game
+	var game = false;
 	$(".start").on("click",function(){
+		if(!game){
+			// Variable resets for new game
+			game = true;
+			current = 0;			
+			currentScore = 0;
+			currentIncorrects = 0;
+			currentTimeouts = 0;
 
-		// Variable resets for new game
-		current = 0;			
-		currentScore = 0;
-		currentIncorrects = 0;
-		currentTimeouts = 0;
+			// Hide Intro UI and set the main wrapper to ready
+			$(".start, .instructions").fadeOut();
+			$(".wrapper").addClass("ready");
 
-		// Hide Intro UI and set the main wrapper to ready
-		$(".start, .instructions").fadeOut();
-		$(".wrapper").addClass("ready");
-
-		// Functions to start the game
-		generateQuestion(); // get the questions ready
-		setTimeout(starTimer,500); // Delay the timer half a second for CSS animation
+			// Functions to start the game
+			generateQuestion(); // get the questions ready
+			setTimeout(starTimer,500); // Delay the timer half a second for CSS animation
+		}
+		
 
 	});
 
@@ -363,6 +367,7 @@ var questions = [
 
 		// Update button text
 		$(".start").html("Click here to Play Again!");
+		game = false; // gate to allow start game
 
 		// Show start button and results
 		$(".start, .instructions").fadeIn();
