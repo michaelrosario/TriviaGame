@@ -10,5 +10,8 @@
   <li>Some of the questions answers are from Wikipedia.</li>
   <li>JS and CSS, from yours truly</li>
 </ul>
-
+<br><br>
+<hr>
+Play Animal Trivia:
+https://michaelrosario.github.io/TriviaGame/
 
